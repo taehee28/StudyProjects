@@ -3,7 +3,7 @@ package com.thk.data.datasource
 import com.thk.data.model.NetworkState
 import com.thk.data.model.Post
 import com.thk.data.network.ApiInterface
-import com.thk.data.network.ApiService
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import javax.inject.Inject
 
