@@ -36,7 +36,7 @@ object DataSourceModule {
 object RetrofitModule {
     @Provides
     @Singleton
-    fun provideApiInterface(retrofit: Retrofit) =
+    fun provideApiInterface(retrofit: Retrofit): ApiInterface =
         retrofit.create(ApiInterface::class.java)
 
     @Provides
