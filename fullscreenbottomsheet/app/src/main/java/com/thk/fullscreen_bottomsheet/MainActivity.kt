@@ -8,12 +8,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -152,16 +156,36 @@ fun FullScreenDialog(onDismissRequest: () -> Unit) {
 
 @Composable
 fun AnimationNavHost() {
+    /**
+     * Navigation Animation 사용한 화면 전환
+     */
+
     val navController = rememberAnimatedNavController()
     
     AnimatedNavHost(navController = navController, startDestination = "Main") {
         composable(
-            "Main"
+            "Main",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
-            MainScreen({ /*TODO*/ })
+            MainScreen { navController.navigate("Sub") }
         }
 
-        composable("Sub") {
+        composable(
+            "Sub",
+            enterTransition = {
+                when (initialState.destination.route) {
+                    "Main" -> slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(150))
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    "Main" -> slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(150))
+                    else -> null
+                }
+            }
+        ) {
             SubScreen()
         }
     }
@@ -169,13 +193,18 @@ fun AnimationNavHost() {
 
 @Composable
 fun MainScreen(onButtonClick: () -> Unit) {
-    Text(text = "Main")
-    Button(onClick = { /*TODO*/ }) {
-        Text(text = "move to Sub")
+    Column {
+        Text(text = "Main")
+        Button(onClick = onButtonClick) {
+            Text(text = "move to Sub")
+        }
+
     }
 }
 
 @Composable
 fun SubScreen() {
-    Text(text = "Sub")
+    Column(Modifier.background(Color.LightGray)) {
+        Text(text = "Sub")
+    }
 }
