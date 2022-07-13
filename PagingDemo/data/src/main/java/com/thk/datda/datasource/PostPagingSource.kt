@@ -18,9 +18,7 @@ class PostPagingSource(
             // 맨처음 로딩할 때의 key값은 null이기 때문에 기본값 할당
             val page = params.key ?: STARTING_USER_ID
 
-            // TODO: 여기서 api 결과를 sealed 클래스로 한번 감싸기
-
-            val response = postApi.getPosts(page)
+            val response = postApi.getUserPosts(page)
             val posts = response.body() ?: emptyList()
 
             val nextKey = if (posts.isEmpty()) {

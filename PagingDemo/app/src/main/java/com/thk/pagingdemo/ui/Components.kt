@@ -17,13 +17,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.thk.datda.model.Post
+import com.thk.pagingdemo.PostViewModel
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-fun PostList() {
+fun PostList(postsFlow: Flow<PagingData<Post>>) {
+    val posts = postsFlow.collectAsLazyPagingItems()
+
     LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
-        items(10, key = { it }) {
-            PostItem(it, it, "hi")
+        items(posts, key = { it.id }) { post ->
+            post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
         }
     }
 }
@@ -32,7 +41,7 @@ fun PostList() {
 @Composable
 fun PostListPreview() {
     PagingDemoTheme {
-        PostList()
+        PostList(emptyFlow())
     }
 }
 

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.thk.pagingdemo">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".PagingDemoApplication"
         android:allowBackup="true"
