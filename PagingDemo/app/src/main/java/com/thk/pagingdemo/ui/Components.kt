@@ -1,5 +1,7 @@
 package com.thk.pagingdemo.ui
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,10 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -30,11 +34,26 @@ import kotlinx.coroutines.flow.emptyFlow
 fun PostList(postsFlow: Flow<PagingData<Post>>) {
     val posts = postsFlow.collectAsLazyPagingItems()
 
-    LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
-        items(posts, key = { it.id }) { post ->
-            post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
+    when {
+        posts.loadState.refresh is LoadState.Loading -> {
+            Box(contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(50.dp),
+                    strokeWidth = 5.dp
+                )
+            }
         }
+        posts.loadState.refresh is LoadState.NotLoading -> {
+            LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
+                items(posts, key = { it.id }) { post ->
+                    post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
+                }
+            }
+        }
+
+        // TODO: Error일 때 화면 처리
     }
+
 }
 
 @Preview
