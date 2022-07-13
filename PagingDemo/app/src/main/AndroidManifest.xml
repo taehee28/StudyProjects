@@ -4,6 +4,7 @@
     package="com.thk.pagingdemo">
 
     <application
+        android:name=".PagingDemoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
