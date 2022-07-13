@@ -16,20 +16,17 @@ class PostPagingSource(
         return try {
 
             // 맨처음 로딩할 때의 key값은 null이기 때문에 기본값 할당
-            val page = params.key ?: STARTING_USER_ID
+            val userId = params.key ?: STARTING_USER_ID
 
-            val response = postApi.getUserPosts(page)
+            val response = postApi.getUserPosts(userId)
             val posts = response.body() ?: emptyList()
 
-            val nextKey = if (posts.isEmpty()) {
-                null
-            } else {
-                page + 1
-            }
+            val prevKey = if (userId > 1) userId - 1 else null
+            val nextKey = if (posts.isEmpty()) null else userId + 1
 
             LoadResult.Page(
                 data = posts,
-                prevKey = if (page == STARTING_USER_ID) null else page,
+                prevKey = prevKey,
                 nextKey = nextKey
             )
 
