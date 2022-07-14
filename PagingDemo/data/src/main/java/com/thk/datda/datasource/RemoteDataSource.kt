@@ -1,11 +1,11 @@
 package com.thk.datda.datasource
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.thk.datda.model.Post
 import com.thk.datda.network.ApiInterface
+import com.thk.datda.paging.PostPagingSource
 import kotlinx.coroutines.flow.Flow
 import java.lang.Exception
 import javax.inject.Inject
@@ -15,7 +15,9 @@ interface RemoteDataSource {
     fun getUserPosts(): Flow<PagingData<Post>>
 }
 
-class RemoteDataSourceImpl @Inject constructor(private val api: ApiInterface): RemoteDataSource {
+class RemoteDataSourceImpl @Inject constructor(
+    private val api: ApiInterface
+) : RemoteDataSource {
     /**
      * 기본적인 api call
      */

@@ -1,6 +1,9 @@
 package com.thk.datda.di
 
+import com.thk.datda.database.PostDao
+import com.thk.datda.database.PostDatabase
 import com.thk.datda.datasource.RemoteDataSource
+import com.thk.datda.network.ApiInterface
 import com.thk.datda.repository.PostRepository
 import com.thk.datda.repository.PostRepositoryImpl
 import dagger.Module
@@ -14,6 +17,6 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun providePostRepository(dataSource: RemoteDataSource): PostRepository =
-        PostRepositoryImpl(dataSource)
+    fun providePostRepository(remoteApi: ApiInterface, database: PostDatabase): PostRepository =
+        PostRepositoryImpl(remoteApi, database)
 }

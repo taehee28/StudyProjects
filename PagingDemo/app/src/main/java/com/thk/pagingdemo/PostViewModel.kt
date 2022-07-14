@@ -9,6 +9,7 @@ import com.thk.datda.model.Post
 import com.thk.datda.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,8 +20,4 @@ class PostViewModel @Inject constructor(
     private val TAG = PostViewModel::class.simpleName
 
     val postFlow: Flow<PagingData<Post>> = postRepository.getUserPosts().cachedIn(viewModelScope)
-
-    suspend fun getPosts() = viewModelScope.launch {
-        Log.d(TAG, "api result: ${postRepository.getPosts()}")
-    }
 }
