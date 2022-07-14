@@ -39,6 +39,8 @@ fun PostList(postsFlow: Flow<PagingData<Post>>) {
             post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
         }
 
+        Log.d("TAG", "PostList: mediator")
+
         posts.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
