@@ -34,26 +34,30 @@ import kotlinx.coroutines.flow.emptyFlow
 fun PostList(postsFlow: Flow<PagingData<Post>>) {
     val posts = postsFlow.collectAsLazyPagingItems()
 
-    when {
-        posts.loadState.refresh is LoadState.Loading -> {
-            Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(50.dp),
-                    strokeWidth = 5.dp
-                )
-            }
+    LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
+        items(posts, key = { it.id }) { post ->
+            post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
         }
-        posts.loadState.refresh is LoadState.NotLoading -> {
-            LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
-                items(posts, key = { it.id }) { post ->
-                    post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
+
+        posts.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.wrapContentHeight()) }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val error = loadState.refresh as LoadState.Error
+                    item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.fillParentMaxSize()) { retry() } }
+                }
+                loadState.append is LoadState.Error -> {
+                    val error = loadState.append as LoadState.Error
+                    item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.wrapContentHeight()) { retry() } }
                 }
             }
         }
-
-        // TODO: Error일 때 화면 처리
     }
-
 }
 
 @Preview
@@ -137,5 +141,52 @@ fun PostItem(
 fun PostItemPreview() {
     PagingDemoTheme {
         PostItem(1, 1, "hi")
+    }
+}
+
+@Composable
+fun LoadingView(modifier: Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(50.dp),
+            strokeWidth = 5.dp
+        )
+    }
+}
+
+@Preview
+@Composable
+fun LoadingViewPreview() {
+    PagingDemoTheme {
+        LoadingView(modifier = Modifier.wrapContentHeight())
+    }
+}
+
+@Composable
+fun ErrorView(message: String, modifier: Modifier, onClick: () -> Unit) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        Text(text = message)
+        Button(onClick = onClick) {
+            Text(text = "retry")
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ErrorViewPreview() {
+    PagingDemoTheme {
+        ErrorView("", modifier = Modifier.wrapContentHeight(), {})
     }
 }
