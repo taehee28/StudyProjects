@@ -24,6 +24,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.thk.datda.logd
 import com.thk.datda.model.Post
 import com.thk.pagingdemo.PostViewModel
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
@@ -39,21 +40,19 @@ fun PostList(postsFlow: Flow<PagingData<Post>>) {
             post?.also { PostItem(userId = it.userId, id = it.id, content = it.body) }
         }
 
-        Log.d("TAG", "PostList: mediator")
-
         posts.apply {
             when {
-                loadState.refresh is LoadState.Loading -> {
+                loadState.mediator?.refresh is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
                 }
-                loadState.append is LoadState.Loading -> {
+                loadState.mediator?.append is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.wrapContentHeight()) }
                 }
-                loadState.refresh is LoadState.Error -> {
+                loadState.mediator?.refresh is LoadState.Error -> {
                     val error = loadState.refresh as LoadState.Error
                     item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.fillParentMaxSize()) { retry() } }
                 }
-                loadState.append is LoadState.Error -> {
+                loadState.mediator?.append is LoadState.Error -> {
                     val error = loadState.append as LoadState.Error
                     item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.wrapContentHeight()) { retry() } }
                 }
