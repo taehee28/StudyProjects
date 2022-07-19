@@ -31,7 +31,6 @@ class PostRepositoryImpl @Inject constructor(
                 database
             )
         ) {
-            // database를 사용하는 PagingSource를 넘길수도 있고,
             // Room에서 데이터를 PagingSource 타입으로 리턴하게 하여
             // PagingSource를 제공
             database.postsDao().getPosts()

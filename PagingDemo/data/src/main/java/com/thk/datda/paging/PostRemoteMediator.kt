@@ -39,12 +39,11 @@ class PostRemoteMediator(
                     val lastItem = state.lastItemOrNull()
                         ?: return MediatorResult.Success(endOfPaginationReached = true)
 
-                    logd(">> listItem = $lastItem")
-
                     lastItem.userId + 1
                 }
             }
 
+            logd(">> load data with userId = $userId")
             val response = postApi.getUserPosts(userId)
 
             database.withTransaction {
