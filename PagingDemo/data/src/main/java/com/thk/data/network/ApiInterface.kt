@@ -4,6 +4,7 @@ import com.thk.data.model.Photo
 import com.thk.data.model.Post
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface ApiInterface {

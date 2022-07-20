@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.skydoves.landscapist.glide.GlideImage
 import com.thk.data.model.Photo
 import com.thk.data.model.Post
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
@@ -33,7 +35,14 @@ fun PhotoList(photoFlow: Flow<PagingData<Photo>>) {
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
         items(photos, key = { it.id }) { photo ->
-            photo?.also { PostItem(userId = it.albumId, id = it.id, content = it.title) }
+            photo?.also {
+                PhotoItem(
+                    albumId = it.albumId,
+                    id = it.id,
+                    title = it.title,
+                    url = it.url
+                )
+            }
         }
 
         photos.apply {
@@ -96,69 +105,94 @@ fun PostListPreview() {
 }
 
 @Composable
+fun PhotoItem(
+    albumId: Int,
+    id: Int,
+    title: String,
+    url: String
+) {
+    ListItem {
+        Text(text = "albumId = $albumId, id = $id")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        com.skydoves.landscapist.glide.GlideImage(
+            imageModel = url,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            contentScale = ContentScale.Crop,
+            loading = {
+                Text(text = "loading...")
+            },
+            failure = {
+                Text(text = "failed")
+            }
+        )
+    }
+}
+
+@Composable
 fun PostItem(
     userId: Int,
     id: Int,
     content: String
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(vertical = 4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    ListItem {
+        Row {
+            Box(modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color.LightGray))
 
-            Row {
-                Box(modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray))
-                
-                Spacer(modifier = Modifier.width(8.dp))
-                
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "user$userId",
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 18.sp
-                        )
+            Spacer(modifier = Modifier.width(8.dp))
 
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Text(
-                            text = "@user$userId",
-                            modifier = Modifier.alpha(0.7f)
-                        )
-
-                        Spacer(modifier = Modifier
-                            .height(0.dp)
-                            .weight(1f))
-
-                        IconButton(onClick = { /*TODO*/ }, modifier = Modifier
-                            .size(24.dp)
-                            .alpha(0.7f)) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "menu")
-                        }
-                    }
-
-                    // 내용
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = content,
-                        style = MaterialTheme.typography.body1,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
+                        text = "user$userId",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
                     )
-                }
-            }
 
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = "@user$userId",
+                        modifier = Modifier.alpha(0.7f)
+                    )
+
+                    Spacer(modifier = Modifier
+                        .height(0.dp)
+                        .weight(1f))
+
+                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier
+                        .size(24.dp)
+                        .alpha(0.7f)) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "menu")
+                    }
+                }
+
+                // 내용
+                Text(
+                    text = content,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                )
+            }
         }
     }
 }
@@ -168,6 +202,23 @@ fun PostItem(
 fun PostItemPreview() {
     PagingDemoTheme {
         PostItem(1, 1, "hi")
+    }
+}
+
+@Composable
+fun ListItem(
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(vertical = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            content = content
+        )
     }
 }
 
