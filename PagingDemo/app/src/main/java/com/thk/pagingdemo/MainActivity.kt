@@ -11,11 +11,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.thk.pagingdemo.ui.PostList
+import com.thk.pagingdemo.ui.PhotoList
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,7 +28,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    PostList(postsFlow = viewModel.postFlow)
+//                    PostList(postsFlow = viewModel.postFlow)
+                    PhotoList(photoFlow = viewModel.photoFlow)
                 }
             }
         }

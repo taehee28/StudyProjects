@@ -19,5 +19,6 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
     private val TAG = PostViewModel::class.simpleName
 
-    val postFlow: Flow<PagingData<Post>> = postRepository.getUserPosts().cachedIn(viewModelScope)
+//    val postFlow: Flow<PagingData<Post>> = postRepository.getUserPosts().cachedIn(viewModelScope)
+    val photoFlow = postRepository.getAlbumPhotos().cachedIn(viewModelScope)
 }

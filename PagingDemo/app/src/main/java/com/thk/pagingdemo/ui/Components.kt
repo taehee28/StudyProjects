@@ -1,7 +1,5 @@
 package com.thk.pagingdemo.ui
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,12 +21,41 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.thk.data.logd
+import com.thk.data.model.Photo
 import com.thk.data.model.Post
-import com.thk.pagingdemo.PostViewModel
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+
+@Composable
+fun PhotoList(photoFlow: Flow<PagingData<Photo>>) {
+    val photos = photoFlow.collectAsLazyPagingItems()
+
+    LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
+        items(photos, key = { it.id }) { photo ->
+            photo?.also { PostItem(userId = it.albumId, id = it.id, content = it.title) }
+        }
+
+        photos.apply {
+            when {
+                loadState.mediator?.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                }
+                loadState.mediator?.append is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.wrapContentHeight()) }
+                }
+                loadState.mediator?.refresh is LoadState.Error -> {
+                    val error = loadState.refresh as LoadState.Error
+                    item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.fillParentMaxSize()) { retry() } }
+                }
+                loadState.mediator?.append is LoadState.Error -> {
+                    val error = loadState.append as LoadState.Error
+                    item { ErrorView(error.error.localizedMessage!!, modifier = Modifier.wrapContentHeight()) { retry() } }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun PostList(postsFlow: Flow<PagingData<Post>>) {
