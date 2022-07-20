@@ -24,8 +24,8 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.thk.datda.logd
-import com.thk.datda.model.Post
+import com.thk.data.logd
+import com.thk.data.model.Post
 import com.thk.pagingdemo.PostViewModel
 import com.thk.pagingdemo.ui.theme.PagingDemoTheme
 import kotlinx.coroutines.flow.Flow

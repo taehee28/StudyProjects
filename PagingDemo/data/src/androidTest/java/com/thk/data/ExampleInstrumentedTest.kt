@@ -1,4 +1,4 @@
-package com.thk.datda
+package com.thk.data
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

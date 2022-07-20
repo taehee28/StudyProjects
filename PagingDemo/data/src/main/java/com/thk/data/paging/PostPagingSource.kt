@@ -1,9 +1,9 @@
-package com.thk.datda.paging
+package com.thk.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.thk.datda.model.Post
-import com.thk.datda.network.ApiInterface
+import com.thk.data.model.Post
+import com.thk.data.network.ApiInterface
 import okio.IOException
 import retrofit2.HttpException
 

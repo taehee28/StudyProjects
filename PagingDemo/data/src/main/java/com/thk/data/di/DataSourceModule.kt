@@ -1,8 +1,8 @@
-package com.thk.datda.di
+package com.thk.data.di
 
-import com.thk.datda.datasource.RemoteDataSource
-import com.thk.datda.datasource.RemoteDataSourceImpl
-import com.thk.datda.network.ApiInterface
+import com.thk.data.datasource.RemoteDataSource
+import com.thk.data.datasource.RemoteDataSourceImpl
+import com.thk.data.network.ApiInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

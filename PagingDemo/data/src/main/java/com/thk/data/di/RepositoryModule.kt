@@ -1,11 +1,11 @@
-package com.thk.datda.di
+package com.thk.data.di
 
-import com.thk.datda.database.PostDao
-import com.thk.datda.database.PostDatabase
-import com.thk.datda.datasource.RemoteDataSource
-import com.thk.datda.network.ApiInterface
-import com.thk.datda.repository.PostRepository
-import com.thk.datda.repository.PostRepositoryImpl
+import com.thk.data.database.PostDao
+import com.thk.data.database.PostDatabase
+import com.thk.data.datasource.RemoteDataSource
+import com.thk.data.network.ApiInterface
+import com.thk.data.repository.PostRepository
+import com.thk.data.repository.PostRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

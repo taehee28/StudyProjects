@@ -1,14 +1,14 @@
-package com.thk.datda.paging
+package com.thk.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.thk.datda.database.PostDatabase
-import com.thk.datda.logd
-import com.thk.datda.model.Post
-import com.thk.datda.network.ApiInterface
+import com.thk.data.database.PostDatabase
+import com.thk.data.logd
+import com.thk.data.model.Post
+import com.thk.data.network.ApiInterface
 import retrofit2.HttpException
 import java.io.IOException
 

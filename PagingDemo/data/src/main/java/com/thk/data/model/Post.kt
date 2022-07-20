@@ -1,9 +1,9 @@
-package com.thk.datda.model
+package com.thk.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.thk.datda.database.TableInfo
+import com.thk.data.database.TableInfo
 
 @Entity(tableName = TableInfo.TABLE_NAME)
 data class Post(

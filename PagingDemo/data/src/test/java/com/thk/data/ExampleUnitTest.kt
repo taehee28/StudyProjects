@@ -1,4 +1,4 @@
-package com.thk.datda
+package com.thk.data
 
 import org.junit.Test
 

@@ -1,6 +1,6 @@
-package com.thk.datda.network
+package com.thk.data.network
 
-import com.thk.datda.model.Post
+import com.thk.data.model.Post
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

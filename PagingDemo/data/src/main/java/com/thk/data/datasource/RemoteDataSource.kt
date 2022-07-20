@@ -1,11 +1,11 @@
-package com.thk.datda.datasource
+package com.thk.data.datasource
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.thk.datda.model.Post
-import com.thk.datda.network.ApiInterface
-import com.thk.datda.paging.PostPagingSource
+import com.thk.data.model.Post
+import com.thk.data.network.ApiInterface
+import com.thk.data.paging.PostPagingSource
 import kotlinx.coroutines.flow.Flow
 import java.lang.Exception
 import javax.inject.Inject

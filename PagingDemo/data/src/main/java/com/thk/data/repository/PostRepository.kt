@@ -1,14 +1,14 @@
-package com.thk.datda.repository
+package com.thk.data.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.thk.datda.database.PostDatabase
-import com.thk.datda.datasource.RemoteDataSource
-import com.thk.datda.model.Post
-import com.thk.datda.network.ApiInterface
-import com.thk.datda.paging.PostRemoteMediator
+import com.thk.data.database.PostDatabase
+import com.thk.data.datasource.RemoteDataSource
+import com.thk.data.model.Post
+import com.thk.data.network.ApiInterface
+import com.thk.data.paging.PostRemoteMediator
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

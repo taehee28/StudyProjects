@@ -1,9 +1,9 @@
-package com.thk.datda.database
+package com.thk.data.database
 
 import android.content.Context
 import androidx.paging.PagingSource
 import androidx.room.*
-import com.thk.datda.model.Post
+import com.thk.data.model.Post
 
 object DatabaseInfo {
     const val DATABASE_VERSION = 1
