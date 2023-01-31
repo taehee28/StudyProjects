@@ -10,7 +10,6 @@
         android:id="@+id/frameLayout"
         android:layout_width="@dimen/map_width"
         android:layout_height="@dimen/map_height"
-        android:background="@drawable/checkerboard_300"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

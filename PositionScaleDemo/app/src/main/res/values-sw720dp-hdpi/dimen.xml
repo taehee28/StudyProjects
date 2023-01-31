@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="map_width">346.6dp</dimen>
+    <dimen name="map_height">386.6dp</dimen>
+    <dimen name="icon_width">52.2dp</dimen>
+    <dimen name="icon_height">63.6dp</dimen>
+</resources>
