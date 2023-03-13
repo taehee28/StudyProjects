@@ -60,4 +60,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+
+    // Firebase libraries version managing
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    
+    // Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }
