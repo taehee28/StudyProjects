@@ -56,6 +56,7 @@ fun LoginScreen(
                 LoadingDialog(onDismissRequest = { /*TODO*/ })
             }
 
+            // FIXME: 한번 토스트가 뜬 이후로는 같은 내용의 토스트가 표시되지 않음
             state.error?.also { showToast(it, context) }
 
             Button(
@@ -77,7 +78,14 @@ fun LoginScreen(
                 Text(text = "Test")
             }
 
-            Button(onClick = { Firebase.auth.signOut() }) {
+            Button(
+                onClick = {
+                    Firebase.auth.signOut()
+                    // 구글 계정 선택창을 다시 띄우고 싶다면
+                    // client도 signOut 처리 해줘야 한다
+                    getGoogleSignInClient(context).signOut()
+                }
+            ) {
                 Text(text = "Logout")
             }
         }
@@ -92,6 +100,9 @@ fun LoginScreenPreview() {
     }
 }
 
+/**
+ * 구글 계정 선택 창 띄우는 launcher
+ */
 @Composable
 private fun rememberLauncherForGoogleLogin(
     onResult: (Task<GoogleSignInAccount>?) -> Unit
