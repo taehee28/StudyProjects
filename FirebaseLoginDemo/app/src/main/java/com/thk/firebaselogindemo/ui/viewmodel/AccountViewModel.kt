@@ -24,44 +24,67 @@ class AccountViewModel : ViewModel() {
     val state: StateFlow<AccountState>
         get() = _state.asStateFlow()
 
-    fun loginWithGoogle(task: Task<GoogleSignInAccount>?) {
-        viewModelScope.launch {
-            kotlin.runCatching {
-                requireNotNull(task) { "Task is null" }
+    fun loginWithGoogle(task: Task<GoogleSignInAccount>?) = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true) }
 
-                // task에서 로그인에 사용할 계정에 대한 인스턴스를 얻기
-                val account: GoogleSignInAccount = task.await()
+        kotlin.runCatching {
+            requireNotNull(task) { "Task is null" }
 
-                // 계정의 idToken으로 credential 얻기
-                val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-                // 얻은 credential로 Firebase에 로그인하기
-                val result: AuthResult = Firebase.auth.signInWithCredential(credential).await()
+            // task에서 로그인에 사용할 계정에 대한 인스턴스를 얻기
+            val account: GoogleSignInAccount = task.await()
 
-                // user 정보가 있는지 확인해서 로그인 결과 체크하기
-                checkNotNull(result.user) { "user is null" }
-            }.onFailure {
-                it.printStackTrace()
+            // 계정의 idToken으로 credential 얻기
+            val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+            // 얻은 credential로 Firebase에 로그인하기
+            val result: AuthResult = Firebase.auth.signInWithCredential(credential).await()
 
-                _state.update { old ->
-                    old.copy(
-                        isLoading = false,
-                        isLoggedIn = false,
-                        error = "구글 로그인에 실패하였습니다."
-                    )
-                }
-            }.onSuccess {
-                _state.update { old ->
-                    old.copy(
-                        isLoading = false,
-                        isLoggedIn = true,
-                        error = null
-                    )
-                }
+            // user 정보가 있는지 확인해서 로그인 결과 체크하기
+            checkNotNull(result.user) { "user is null" }
+        }.onSuccess {
+            _state.update { old ->
+                old.copy(
+                    isLoading = false,
+                    isLoggedIn = true,
+                    error = null
+                )
+            }
+        }.onFailure {
+            it.printStackTrace()
+
+            _state.update { old ->
+                old.copy(
+                    isLoading = false,
+                    isLoggedIn = false,
+                    error = "구글 로그인에 실패하였습니다."
+                )
             }
         }
     }
 
-    fun loginWithGuest() {
+    fun loginWithGuest() = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true) }
 
+        kotlin.runCatching {
+            val result: AuthResult = Firebase.auth.signInAnonymously().await()
+            checkNotNull(result.user)
+        }.onSuccess {
+            _state.update { old ->
+                old.copy(
+                    isLoading = false,
+                    isLoggedIn = true,
+                    error = null
+                )
+            }
+        }.onFailure {
+            it.printStackTrace()
+
+            _state.update { old ->
+                old.copy(
+                    isLoading = false,
+                    isLoggedIn = false,
+                    error = "게스트 로그인에 실패하였습니다."
+                )
+            }
+        }
     }
 }

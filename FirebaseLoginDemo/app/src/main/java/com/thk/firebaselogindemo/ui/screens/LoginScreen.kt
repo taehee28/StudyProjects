@@ -66,13 +66,13 @@ fun LoginScreen(
             ) {
                 Text(text = "Google Login")
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { viewModel.loginWithGuest() }) {
                 Text(text = "Guest Login")
             }
 
             Button(
                 onClick = {
-                    logd(FirebaseAuth.getInstance().currentUser.toString())
+                    showToast("${FirebaseAuth.getInstance().currentUser != null}", context)
                 }
             ) {
                 Text(text = "Test")
