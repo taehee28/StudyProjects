@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thk.data.repository.LoginRepository
-import com.thk.firebaselogindemo.ui.state.AccountState
+import com.thk.firebaselogindemo.ui.state.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,11 +14,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AccountState())
-    val state: StateFlow<AccountState>
+    private val _state = MutableStateFlow(LoginState())
+    val state: StateFlow<LoginState>
         get() = _state.asStateFlow()
 
     val googleSignInIntent: Intent

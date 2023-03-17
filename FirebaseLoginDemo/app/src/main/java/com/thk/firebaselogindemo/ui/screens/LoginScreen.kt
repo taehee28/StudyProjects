@@ -2,7 +2,6 @@ package com.thk.firebaselogindemo.ui.screens
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -23,12 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.thk.firebaselogindemo.ui.viewmodel.AccountViewModel
+import com.thk.firebaselogindemo.ui.viewmodel.LoginViewModel
 import com.thk.firebaselogindemo.ui.components.LoadingDialog
 
 @Composable
 fun LoginScreen(
-    viewModel: AccountViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     Scaffold { paddingValues ->
         Column(
