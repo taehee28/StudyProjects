@@ -37,14 +37,12 @@ class LoginViewModel @Inject constructor(
                         error = null
                     )
                 }
-            }.onFailure {
-                it.printStackTrace()
-
+            }.onFailure { msg ->
                 _state.update { old ->
                     old.copy(
                         isLoading = false,
                         isLoggedIn = false,
-                        error = it.message
+                        error = msg
                     )
                 }
             }
@@ -63,14 +61,12 @@ class LoginViewModel @Inject constructor(
                         error = null
                     )
                 }
-            }.onFailure {
-                it.printStackTrace()
-
+            }.onFailure { msg ->
                 _state.update { old ->
                     old.copy(
                         isLoading = false,
                         isLoggedIn = false,
-                        error = "게스트 로그인에 실패하였습니다."
+                        error = msg
                     )
                 }
             }
