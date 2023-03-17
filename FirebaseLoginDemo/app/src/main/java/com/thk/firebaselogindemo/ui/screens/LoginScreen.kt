@@ -24,17 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.thk.firebaselogindemo.ui.viewmodel.AccountViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.thk.firebaselogindemo.ui.components.LoadingDialog
-import com.thk.firebaselogindemo.util.getGoogleSignInClient
-import com.thk.firebaselogindemo.util.logd
 
 @Composable
 fun LoginScreen(
