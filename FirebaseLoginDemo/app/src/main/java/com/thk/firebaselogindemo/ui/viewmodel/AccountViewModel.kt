@@ -1,5 +1,6 @@
 package com.thk.firebaselogindemo.ui.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -10,20 +11,54 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.thk.data.repository.LoginRepository
 import com.thk.firebaselogindemo.ui.state.AccountState
 import com.thk.firebaselogindemo.util.logd
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class AccountViewModel : ViewModel() {
+@HiltViewModel
+class AccountViewModel @Inject constructor(
+    private val loginRepository: LoginRepository
+) : ViewModel() {
     private val _state = MutableStateFlow(AccountState())
     val state: StateFlow<AccountState>
         get() = _state.asStateFlow()
 
+    val googleSignInIntent: Intent
+        get() = loginRepository.getGoogleSignInIntent()
+
+    fun loginWithGoogle(resultIntent: Intent?) = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true) }
+
+        loginRepository
+            .loginWithGoogle(resultIntent = resultIntent)
+            .onSuccess {
+                _state.update { old ->
+                    old.copy(
+                        isLoading = false,
+                        isLoggedIn = true,
+                        error = null
+                    )
+                }
+            }.onFailure {
+                it.printStackTrace()
+
+                _state.update { old ->
+                    old.copy(
+                        isLoading = false,
+                        isLoggedIn = false,
+                        error = it.message
+                    )
+                }
+            }
+    }
     fun loginWithGoogle(task: Task<GoogleSignInAccount>?) = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
 
@@ -64,27 +99,30 @@ class AccountViewModel : ViewModel() {
     fun loginWithGuest() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
 
-        kotlin.runCatching {
-            val result: AuthResult = Firebase.auth.signInAnonymously().await()
-            checkNotNull(result.user)
-        }.onSuccess {
-            _state.update { old ->
-                old.copy(
-                    isLoading = false,
-                    isLoggedIn = true,
-                    error = null
-                )
-            }
-        }.onFailure {
-            it.printStackTrace()
+        loginRepository
+            .loginWithGuest()
+            .onSuccess {
+                _state.update { old ->
+                    old.copy(
+                        isLoading = false,
+                        isLoggedIn = true,
+                        error = null
+                    )
+                }
+            }.onFailure {
+                it.printStackTrace()
 
-            _state.update { old ->
-                old.copy(
-                    isLoading = false,
-                    isLoggedIn = false,
-                    error = "게스트 로그인에 실패하였습니다."
-                )
+                _state.update { old ->
+                    old.copy(
+                        isLoading = false,
+                        isLoggedIn = false,
+                        error = "게스트 로그인에 실패하였습니다."
+                    )
+                }
             }
-        }
+    }
+
+    fun logout() {
+        loginRepository.logout()
     }
 }

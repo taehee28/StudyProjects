@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.thk.firebaselogindemo.ui.viewmodel.AccountViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.auth.api.Auth
@@ -37,7 +38,7 @@ import com.thk.firebaselogindemo.util.logd
 
 @Composable
 fun LoginScreen(
-    viewModel: AccountViewModel = viewModel(),
+    viewModel: AccountViewModel = hiltViewModel(),
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -50,7 +51,9 @@ fun LoginScreen(
             val state by viewModel.state.collectAsState()
 
             val context = LocalContext.current
-            val googleLauncher = rememberLauncherForGoogleLogin { viewModel.loginWithGoogle(it) }
+            val googleLauncher = rememberLauncherForGoogleLogin { intent ->
+                viewModel.loginWithGoogle(intent)
+            }
 
             if (state.isLoading) {
                 LoadingDialog(onDismissRequest = { /*TODO*/ })
@@ -61,7 +64,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    googleLauncher.launch(getGoogleSignInClient(context).signInIntent)
+                    googleLauncher.launch(viewModel.googleSignInIntent)
                 }
             ) {
                 Text(text = "Google Login")
@@ -72,7 +75,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    showToast("${FirebaseAuth.getInstance().currentUser != null}", context)
+                    /*showToast("${FirebaseAuth.getInstance().currentUser != null}", context)*/
                 }
             ) {
                 Text(text = "Test")
@@ -80,10 +83,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    Firebase.auth.signOut()
-                    // 구글 계정 선택창을 다시 띄우고 싶다면
-                    // client도 signOut 처리 해줘야 한다
-                    getGoogleSignInClient(context).signOut()
+                    viewModel.logout()
                 }
             ) {
                 Text(text = "Logout")
@@ -105,12 +105,11 @@ fun LoginScreenPreview() {
  */
 @Composable
 private fun rememberLauncherForGoogleLogin(
-    onResult: (Task<GoogleSignInAccount>?) -> Unit
+    onResult: (Intent?) -> Unit
 ) = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.StartActivityForResult()
 ) { result: ActivityResult ->
-    val task = result.data?.let { GoogleSignIn.getSignedInAccountFromIntent(it) }
-    onResult(task)
+    onResult(result.data)
 }
 
 private fun showToast(msg: String, context: Context) {

@@ -16,7 +16,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.thk.firebaselogindemo.R
 import com.thk.firebaselogindemo.navigation.AppNavHost
 import com.thk.firebaselogindemo.ui.theme.FirebaseLoginDemoTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

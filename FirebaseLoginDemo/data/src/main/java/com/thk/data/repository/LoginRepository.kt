@@ -14,6 +14,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface LoginRepository {
+    fun getGoogleSignInIntent(): Intent
     suspend fun loginWithGoogle(resultIntent: Intent?): Result<Unit>
     suspend fun loginWithGuest(): Result<Unit>
     fun logout()
@@ -22,6 +23,8 @@ interface LoginRepository {
 class LoginRepositoryImpl @Inject constructor(
     private val googleSignInService: GoogleSignInService
 ) : LoginRepository {
+
+    override fun getGoogleSignInIntent(): Intent = googleSignInService.getSignInIntent()
 
     override suspend fun loginWithGoogle(resultIntent: Intent?): Result<Unit> = kotlin.runCatching {
         requireNotNull(resultIntent) { "구글 로그인에 실패했습니다."}
@@ -41,6 +44,7 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun logout() {
-        TODO("Not yet implemented")
+        Firebase.auth.signOut()
+        googleSignInService.signOut()
     }
 }
