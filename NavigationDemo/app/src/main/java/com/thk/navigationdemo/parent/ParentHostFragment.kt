@@ -23,7 +23,6 @@ class ParentHostFragment : BaseFragment<FragmentParentHostBinding>(FragmentParen
     private fun initNavigationView() {
         val navHost = childFragmentManager.findFragmentById(R.id.nav_host_parent) as NavHostFragment
         val navController = navHost.navController
-//        NavigationUI.setupWithNavController(binding.bottomNav, navController)
-        binding.bottomNav.setupWithNavController(navController)
+        NavigationUI.setupWithNavController(binding.bottomNav, navController)
     }
 }

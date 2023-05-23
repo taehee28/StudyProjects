@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 메뉴 아이템 id를 navGraph id와 일치시켜야 됨 -->
     <item
-        android:id="@+id/parentMainFragment"
+        android:id="@+id/parent_main_nav_graph"
         android:title="Home"/>
     <item
-        android:id="@+id/notificationFragment"
+        android:id="@+id/notification_nav_graph"
         android:title="Notification"/>
     <item
-        android:id="@+id/parentMyPageFragment"
+        android:id="@+id/parent_myPage_nav_graph"
         android:title="MyPage"/>
 </menu>

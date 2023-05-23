@@ -3,21 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/kid_nav_graph"
-    app:startDestination="@id/kidMainFragment">
+    app:startDestination="@id/kid_main_nav_graph">
 
-    <fragment
-        android:id="@+id/kidMainFragment"
-        android:name="com.thk.navigationdemo.kid.KidMainFragment"
-        android:label="fragment_kid_main"
-        tools:layout="@layout/fragment_kid_main" />
-    <fragment
-        android:id="@+id/notificationFragment"
-        android:name="com.thk.navigationdemo.common.NotificationFragment"
-        android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
-    <fragment
-        android:id="@+id/kidMyPageFragment"
-        android:name="com.thk.navigationdemo.kid.KidMyPageFragment"
-        android:label="fragment_kid_my_page"
-        tools:layout="@layout/fragment_kid_my_page" />
+    <navigation android:id="@+id/kid_main_nav_graph"
+        app:startDestination="@id/kidMainFragment">
+        <fragment
+            android:id="@+id/kidMainFragment"
+            android:name="com.thk.navigationdemo.kid.KidMainFragment"
+            android:label="fragment_kid_main"
+            tools:layout="@layout/fragment_kid_main">
+            <action
+                android:id="@+id/action_kidMainFragment_to_kidDetailFragment"
+                app:destination="@id/kidDetailFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/kidDetailFragment"
+            android:name="com.thk.navigationdemo.kid.KidDetailFragment"
+            android:label="fragment_kid_detail"
+            tools:layout="@layout/fragment_kid_detail" />
+    </navigation>
+
+    <include app:graph="@navigation/notification_nav_graph" />
+
+    <navigation android:id="@+id/kid_myPage_nav_graph"
+        app:startDestination="@id/kidMyPageFragment">
+        <fragment
+            android:id="@+id/kidMyPageFragment"
+            android:name="com.thk.navigationdemo.kid.KidMyPageFragment"
+            android:label="fragment_kid_my_page"
+            tools:layout="@layout/fragment_kid_my_page" />
+    </navigation>
+
 </navigation>
