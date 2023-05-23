@@ -8,30 +8,15 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.thk.navigationdemo.R
+import com.thk.navigationdemo.base.BaseFragment
 import com.thk.navigationdemo.databinding.FragmentKidHostBinding
 
-class KidHostFragment : Fragment() {
-    private var _binding: FragmentKidHostBinding? = null
-    private val binding
-        get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        _binding = FragmentKidHostBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+class KidHostFragment : BaseFragment<FragmentKidHostBinding>(FragmentKidHostBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initNavigationView()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 
     private fun initNavigationView() {
