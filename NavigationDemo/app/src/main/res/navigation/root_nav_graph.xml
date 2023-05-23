@@ -10,15 +10,25 @@
         android:name="com.thk.navigationdemo.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
+
         <action
-            android:id="@+id/action_loginFragment_to_parent_nav_graph"
-            app:destination="@id/parent_nav_graph" />
+            android:id="@+id/action_loginFragment_to_parentHostFragment"
+            app:destination="@id/parentHostFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_kid_nav_graph"
-            app:destination="@id/kid_nav_graph" />
+            android:id="@+id/action_loginFragment_to_kidHostFragment"
+            app:destination="@id/kidHostFragment" />
     </fragment>
 
-    <include app:graph="@navigation/parent_nav_graph" />
+    <fragment
+        android:id="@+id/parentHostFragment"
+        android:name="com.thk.navigationdemo.parent.ParentHostFragment"
+        android:label="fragment_parent_host"
+        tools:layout="@layout/fragment_parent_host" />
+    <fragment
+        android:id="@+id/kidHostFragment"
+        android:name="com.thk.navigationdemo.kid.KidHostFragment"
+        android:label="fragment_kid_host"
+        tools:layout="@layout/fragment_kid_host" />
 
-    <include app:graph="@navigation/kid_nav_graph" />
+
 </navigation>

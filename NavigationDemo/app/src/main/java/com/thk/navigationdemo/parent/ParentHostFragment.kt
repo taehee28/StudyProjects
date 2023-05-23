@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.thk.navigationdemo.R
 import com.thk.navigationdemo.base.BaseFragment
 import com.thk.navigationdemo.databinding.FragmentParentHostBinding
@@ -20,8 +21,9 @@ class ParentHostFragment : BaseFragment<FragmentParentHostBinding>(FragmentParen
     }
 
     private fun initNavigationView() {
-        val navHost = childFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+        val navHost = childFragmentManager.findFragmentById(R.id.nav_host_parent) as NavHostFragment
         val navController = navHost.navController
-        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+//        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+        binding.bottomNav.setupWithNavController(navController)
     }
 }
