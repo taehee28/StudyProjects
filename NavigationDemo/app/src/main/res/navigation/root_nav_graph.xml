@@ -13,10 +13,14 @@
 
         <action
             android:id="@+id/action_loginFragment_to_parentHostFragment"
-            app:destination="@id/parentHostFragment" />
+            app:destination="@id/parentHostFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFragment_to_kidHostFragment"
-            app:destination="@id/kidHostFragment" />
+            app:destination="@id/kidHostFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
