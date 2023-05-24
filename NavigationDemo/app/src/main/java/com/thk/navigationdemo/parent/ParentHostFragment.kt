@@ -35,6 +35,14 @@ class ParentHostFragment : BaseFragment<FragmentParentHostBinding>(FragmentParen
         navController = navHost.navController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
+        /**
+         * note
+         * 메인 도장판 화면을 거치고 종료 한다면..
+         * -> 메인 도장판 화면이 상세 화면 등으로 이동한 상태일 땐?
+         *    navigation 기본 동작은 이동한거 무시하고 메인 메뉴의 시작화면을 무조건 보여줌.
+         *    하단의 홈 메뉴를 누르면 이동했었던 화면으로 돌아감
+         */
+
         navController.addOnDestinationChangedListener { controller, destination, args ->
             logd("destination = $destination")
 
